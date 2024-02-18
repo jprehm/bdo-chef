@@ -48,9 +48,11 @@ class CraftingCalculator
 
         if ($ingredient->isCraftable()) {
             $recipe = $this->getIngredients($ingredient);
-            $item->crafts = $recipe->crafts;
-            $item->ingredients = $recipe->ingredients;
-            $count = $ingredient->count + $item->crafts;
+            if (!is_null($recipe)) {
+                $item->crafts = $recipe->crafts;
+                $item->ingredients = $recipe->ingredients;
+                $count = $ingredient->count + $item->crafts;
+            }
         }
 
         $item->recipe_crafts = $ingredient->isCraftable() ? (int) floor($count / $item->count) : 0;

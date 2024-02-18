@@ -188,6 +188,11 @@ class ConsumableSeeder extends Seeder
                     (object) ['name' => 'Red Sauce', 'count' => 3],
                 ])
             ], (object) [
+                'name' => 'Teff Flour',
+                'ingredients' => collect([
+                    (object) ['name' => 'Teff', 'count' => 1],
+                ])
+            ], (object) [
                 'name' => 'Teff Flour Dough',
                 'ingredients' => collect([
                     (object) ['name' => 'Teff Flour', 'count' => 1],
