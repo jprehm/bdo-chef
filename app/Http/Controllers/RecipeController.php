@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRecipeRequest;
 use App\Http\Requests\UpdateRecipeRequest;
 use App\Models\Recipe;
+use App\Services\CraftingCalculator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Services\CraftingCalculator;
 
 class RecipeController extends Controller
 {
@@ -54,7 +54,7 @@ class RecipeController extends Controller
     {
         return Inertia::render('Dashboard', [
             'recipes' => Recipe::all(),
-            'recipe' => $recipe
+            'recipe' => $recipe,
         ]);
     }
 

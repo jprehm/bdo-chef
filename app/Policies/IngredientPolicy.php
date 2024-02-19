@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Ingredient;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class IngredientPolicy
 {
@@ -37,7 +36,7 @@ class IngredientPolicy
      */
     public function update(User $user, Ingredient $ingredient): bool
     {
-        //
+        return in_array($ingredient->id, $user->ingredients->pluck('id')->toArray());
     }
 
     /**

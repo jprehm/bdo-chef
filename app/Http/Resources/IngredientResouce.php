@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Number;
 
 class IngredientResouce extends JsonResource
 {
@@ -21,9 +22,9 @@ class IngredientResouce extends JsonResource
             'name' => $this->name,
             'type' => ucfirst($this->type),
             'count' => $this->count,
-            'crafts' => $this->whenHas($this->crafts),
-            'on_hand' => $this->whenHas($this->on_hand),
-            'needed' => $this->whenHas($this->needed),
+            'crafts' => Number::format($this->crafts ?? 0),
+            'on_hand' => Number::format($this->on_hand ?? 0),
+            'needed' => Number::format($this->needed ?? 0),
             'ingredients' => IngredientResouce::collection($this->whenHas('ingredients')),
         ];
     }

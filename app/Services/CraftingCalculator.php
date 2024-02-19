@@ -25,12 +25,13 @@ class CraftingCalculator
 
         $this->recipe->crafts = $this->recipe->ingredients
             ->where('type', '!=', 'vendor')
-            ->min("recipe_crafts") ?? 0;
+            ->min('recipe_crafts') ?? 0;
 
         $this->recipe
             ->ingredients
             ->transform(function (Ingredient $item) {
                 $item->needed = $this->recipe->crafts * $item->count;
+
                 return $item;
             });
 
@@ -48,7 +49,7 @@ class CraftingCalculator
 
         if ($ingredient->isCraftable()) {
             $recipe = $this->getIngredients($ingredient);
-            if (!is_null($recipe)) {
+            if (! is_null($recipe)) {
                 $item->crafts = $recipe->crafts;
                 $item->ingredients = $recipe->ingredients;
                 $count = $ingredient->count + $item->crafts;
@@ -56,6 +57,7 @@ class CraftingCalculator
         }
 
         $item->recipe_crafts = $ingredient->isCraftable() ? (int) floor($count / $item->count) : 0;
+
         return $item;
     }
 
@@ -75,12 +77,13 @@ class CraftingCalculator
 
         $recipe->crafts = $recipe->ingredients
             ->where('type', '!=', 'vendor')
-            ->min("recipe_crafts") ?? 0;
+            ->min('recipe_crafts') ?? 0;
 
         $recipe
             ->ingredients
             ->transform(function (Ingredient $item) use ($recipe) {
                 $item->needed = $recipe->crafts * $item->count;
+
                 return $item;
             });
 

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -145,7 +144,7 @@ class RecipeSeeder extends Seeder
                 'type' => 'processing',
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
         ];
     }
 }

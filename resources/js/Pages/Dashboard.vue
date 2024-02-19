@@ -17,7 +17,6 @@ const props = defineProps({
     recipe: {
         type: Object
     }
-
 })
 
 const form = useForm({
@@ -26,6 +25,8 @@ const form = useForm({
 
 const submit = () => {
     form.get(route('recipes'), {
+        preserveState: true,
+        preserveScroll: true,
     });
 };
 </script>

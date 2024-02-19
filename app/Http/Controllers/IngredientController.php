@@ -12,7 +12,6 @@ use Str;
 
 class IngredientController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      */
@@ -22,11 +21,12 @@ class IngredientController extends Controller
             'ingredients' => IngredientResouce::collection(
                 $request->user()
                     ->ingredients
-                    ->filter(function ($item) use ($request) {
+                    ->filter(function (Ingredient $item) use ($request) {
                         if (empty($request?->term)) {
                             return true;
                         }
-                        return Str::contains($item->name, $request->term);
+
+                        return Str::contains($item->name, $request->term, true);
                     })
             )->resource,
             'term' => $request?->term,
@@ -70,6 +70,8 @@ class IngredientController extends Controller
      */
     public function update(UpdateIngredientRequest $request, Ingredient $ingredient)
     {
+        // $this->authorize('update', $ingredient);
+
         $request->user()->ingredients()->updateExistingPivot(
             $ingredient->id,
             ['count' => $request->count]

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateIngredientRequest extends FormRequest
@@ -11,7 +12,7 @@ class UpdateIngredientRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('update', $this->ingredient);
     }
 
     /**
@@ -22,7 +23,7 @@ class UpdateIngredientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'count' => 'required|integer|min:0|max:999999999'
+            'count' => 'required|integer|min:0|max:999999999',
         ];
     }
 }

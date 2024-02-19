@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ingredient extends Model
 {
@@ -16,19 +15,18 @@ class Ingredient extends Model
     public $fillable = [
         'name',
         'weight',
-        'type'
+        'type',
     ];
 
     public $casts = [
         'name' => 'string',
         'weight' => 'decimal:2',
-        'type' => 'string' //! enum
+        'type' => 'string', //! enum
     ];
 
     public $appends = [
-        'count'
+        'count',
     ];
-
 
     public function count(): Attribute
     {
