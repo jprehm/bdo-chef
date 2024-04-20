@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\IngredientType;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,7 +22,7 @@ class Ingredient extends Model
     public $casts = [
         'name' => 'string',
         'weight' => 'decimal:2',
-        'type' => 'string', //! enum
+        'type' => IngredientType::class,
     ];
 
     public $appends = [
@@ -37,7 +38,7 @@ class Ingredient extends Model
 
     public function isCraftable(): bool
     {
-        return in_array($this->type, ['processing', 'cooking', 'worker']);
+        return $this->type !== IngredientType::VENDOR->value;
     }
 
     public function users(): MorphToMany
@@ -45,9 +46,6 @@ class Ingredient extends Model
         return $this->morphedByMany(User::class, 'ingredientable');
     }
 
-    /**
-     * Get all of the videos that are assigned this tag.
-     */
     public function recipes(): MorphToMany
     {
         return $this->morphedByMany(Recipe::class, 'ingredientable');

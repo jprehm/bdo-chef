@@ -20,7 +20,7 @@ class IngredientResouce extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'type' => ucfirst($this->type),
+            'type' => ucfirst($this->type->value),
             'count' => $this->count,
             'crafts' => Number::format($this->crafts ?? 0),
             'on_hand' => Number::format($this->on_hand ?? 0),
