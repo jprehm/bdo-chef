@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('ingredients', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique(true);
-            $table->decimal('weight', 8, 2);
+            $table->decimal(column: 'weight', total: 8, places: 2);
             $table->string('type');
             $table->timestamps();
             $table->softDeletes();
