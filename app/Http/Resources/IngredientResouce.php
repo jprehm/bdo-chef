@@ -25,6 +25,7 @@ class IngredientResouce extends JsonResource
             'crafts' => Number::format($this->crafts ?? 0),
             'on_hand' => Number::format($this->on_hand ?? 0),
             'needed' => Number::format($this->needed ?? 0),
+            'recipe_crafts' => Number::format($this->recipe_crafts ?? 0),
             'ingredients' => IngredientResouce::collection($this->whenHas('ingredients')),
         ];
     }

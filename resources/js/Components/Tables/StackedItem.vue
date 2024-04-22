@@ -1,5 +1,5 @@
 <script setup>
-import { ChevronRightIcon } from '@heroicons/vue/20/solid'
+import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
 import StackedItem from '@/Components/Tables/StackedItem.vue'
 
 defineProps({
@@ -13,10 +13,18 @@ defineProps({
         default: false
     }
 })
+
+const convertToInt = (value) => parseInt(value.replace(/,/g, ''))
+
+const hasLowestCrafts = (item, ingredients) => {
+    const min_recipe_crafts = Math.min(...ingredients.map(item => convertToInt(item.recipe_crafts)))
+
+    return convertToInt(item.recipe_crafts) == min_recipe_crafts
+}
 </script>
 
 <template>
-    <li v-for="item in ingredients" :key="item.name">
+    <li v-for="item in  ingredients " :key="item.name">
         <div class="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6">
             <span v-if="showLink" class="absolute left-4 top-4 -ml-px h-full w-0.5 bg-slate-500" aria-hidden="true"></span>
             <div class="flex min-w-0 gap-x-4">
@@ -25,14 +33,15 @@ defineProps({
                     alt="" />
                 <div class="min-w-0 flex-auto">
                     <p class="text-sm font-semibold leading-6 text-gray-900">
-                        <!-- <span class="absolute inset-x-0 -top-px bottom-0" /> -->
                     <p>{{ item.name }}</p>
                     </p>
                     <p class="mt-1 text-xs leading-5 text-gray-500">
-                        <!-- <span class="absolute inset-x-0 -top-px bottom-0" /> -->
                     <p class="text-sm font-semibold">On Hand: <span class="text-gray-900">{{ item.on_hand }}</span></p>
                     <p class="text-sm font-semibold">Need: <span class="text-gray-900">{{ item.needed }}</span></p>
                     <p class="text-sm font-semibold">Can Craft: <span class="text-gray-900">{{ item.crafts }}</span></p>
+                    <p class="text-sm font-semibold">Possible Recipe Crafts: <span
+                            :class="[hasLowestCrafts(item, ingredients) ? 'text-red-900' : 'text-gray-900']" class="">{{
+                                item.recipe_crafts }}</span></p>
                     </p>
                 </div>
             </div>
@@ -52,13 +61,14 @@ defineProps({
                     </span>
                 </div>
                 <button v-if="item.ingredients">
-                    <ChevronRightIcon class="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
+                    <ChevronRightIcon v-if="!item.showCrafting" class="h-5 w-5 flex-none text-gray-400"
+                        aria-hidden="true" />
+                    <ChevronDownIcon v-else class="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
                 </button>
             </div>
         </div>
         <div v-if="item.showCrafting" class="mx-8">
             <StackedItem :ingredients="item.ingredients" :showLink="true"></StackedItem>
         </div>
-
     </li>
 </template>
