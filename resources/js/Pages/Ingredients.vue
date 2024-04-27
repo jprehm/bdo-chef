@@ -29,7 +29,7 @@ const submit = debounce(() => {
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Ingredients" />
 
     <AuthenticatedLayout>
         <template #header>
