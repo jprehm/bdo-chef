@@ -42,6 +42,7 @@ const mobileMenuOpen = ref(false)
                     <NavLink :href="route('profile.edit')" :active="route().current('profile.edit')"
                         class="ml-4 text-sm font-semibold leading-6 text-white">Profile</NavLink>
                     <NavLink :href="route('logout')" method="post"
+                        as="Button"
                         class="ml-4 text-sm font-semibold leading-6 text-white">Log Out</NavLink>
                 </div>
             </nav>
