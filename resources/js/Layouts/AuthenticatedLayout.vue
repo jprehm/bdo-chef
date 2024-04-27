@@ -1,134 +1,77 @@
 <script setup>
-import { ref } from 'vue';
-import Logo from '@/Components/Logo.vue';
-import Dropdown from '@/Components/Dropdown.vue';
-import DropdownLink from '@/Components/DropdownLink.vue';
+import { ref } from 'vue'
+import { Dialog, DialogPanel } from '@headlessui/vue'
+import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 import NavLink from '@/Components/NavLink.vue';
+import Logo from '@/Components/Logo.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
+import Footer from '@/Layouts/Footer.vue'
 
-const showingNavigationDropdown = ref(false);
+const navigation = [
+    { name: 'Recipes', href: route('recipes'), active: route().current('recipes') },
+    { name: 'Ingredients', href: route('ingredients.index'), active: route().current('ingredients.index') },
+]
+
+const mobileMenuOpen = ref(false)
 </script>
 
 <template>
-    <div>
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <nav class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
-                <!-- Primary Navigation Menu -->
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex justify-between h-16">
-                        <div class="flex">
-                            <!-- Logo -->
-                            <div class="shrink-0 flex items-center">
-                                <Link :href="route('recipes')">
-                                    <Logo classes="text-center h-20"/>
-                                </Link>
-
-                            </div>
-
-                            <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('recipes')" :active="route().current('recipes')">
-                                    Recipes
-                                </NavLink>
-                                <NavLink :href="route('ingredients.index')" :active="route().current('ingredients.index')">
-                                    Ingredients
-                                </NavLink>
-                            </div>
-                        </div>
-
-                        <div class="hidden sm:flex sm:items-center sm:ms-6">
-                            <!-- Settings Dropdown -->
-                            <div class="ms-3 relative">
-                                <Dropdown align="right" width="48">
-                                    <template #trigger>
-                                        <span class="inline-flex rounded-md">
-                                            <button
-                                                type="button"
-                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
-                                            >
-                                                {{ $page.props.auth.user.name }}
-
-                                                <svg
-                                                    class="ms-2 -me-0.5 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fill-rule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clip-rule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </template>
-
-                                    <template #content>
-                                        <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
-                                        <DropdownLink :href="route('logout')" method="post" as="button">
-                                            Log Out
-                                        </DropdownLink>
-                                    </template>
-                                </Dropdown>
-                            </div>
-                        </div>
-
-                        <!-- Hamburger -->
-                        <div class="-me-2 flex items-center sm:hidden">
-                            <button
-                                @click="showingNavigationDropdown = !showingNavigationDropdown"
-                                class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
-                            >
-                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                    <path
-                                        :class="{
-                                            hidden: showingNavigationDropdown,
-                                            'inline-flex': !showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        :class="{
-                                            hidden: !showingNavigationDropdown,
-                                            'inline-flex': showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
+    <header class="">
+        <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+            <div class="flex lg:flex-1">
+                <Link :href="route('welcome')" class="-m-1.5 p-1.5">
+                    <span class="sr-only">BDO Chef</span>
+                    <Logo classes="h-10"/>
+                </Link>
+            </div>
+            <div class="flex lg:hidden">
+                <button type="button"
+                    class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400"
+                    @click="mobileMenuOpen = true">
+                    <span class="sr-only">Open main menu</span>
+                    <Bars3Icon class="h-6 w-6" aria-hidden="true" />
+                </button>
+            </div>
+            <div class="hidden lg:flex lg:gap-x-8">
+                <NavLink v-for="item in navigation"
+                    :key="item.name"
+                    :href="item.href"
+                    :active="item.active"
+                    class="text-sm font-semibold leading-6 text-white">{{ item.name }}</NavLink>
+            </div>
+            <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+                <NavLink :href="route('profile.edit')"
+                    :active="route().current('profile.edit')"
+                    class="ml-4 text-sm font-semibold leading-6 text-white">Profile</NavLink>
+                <NavLink :href="route('logout')"
+                    method="post"
+                    class="ml-4 text-sm font-semibold leading-6 text-white">Log Out</NavLink>
+            </div>
+        </nav>
+        <Dialog as="div" class="lg:hidden" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
+            <div class="fixed inset-0 z-10" />
+            <DialogPanel
+                class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-gray-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
+                <div class="flex items-center justify-between">
+                    <a href="#" class="-m-1.5 p-1.5">
+                        <span class="sr-only">BDO Chef</span>
+                        <Logo classes="h-8" />
+                    </a>
+                    <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-400" @click="mobileMenuOpen = false">
+                        <span class="sr-only">Close menu</span>
+                        <XMarkIcon class="h-6 w-6" aria-hidden="true" />
+                    </button>
                 </div>
-
-                <!-- Responsive Navigation Menu -->
-                <div
-                    :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
-                    class="sm:hidden"
-                >
-                    <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('recipes')" :active="route().current('recipes')">
-                            Recipes
-                        </ResponsiveNavLink>
-                    </div>
-
-                    <!-- Responsive Settings Options -->
-                    <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-                        <div class="px-4">
-                            <div class="font-medium text-base text-gray-800 dark:text-gray-200">
-                                {{ $page.props.auth.user.name }}
-                            </div>
-                            <div class="font-medium text-sm text-gray-500">{{ $page.props.auth.user.email }}</div>
+                <div class="mt-6 flow-root">
+                    <div class="-my-6 divide-y divide-gray-500/25">
+                        <div class="space-y-2 py-6">
+                            <ResponsiveNavLink v-for="item in navigation" :key="item.name" :href="item.href"
+                                :class="[item.active ? 'text-indigo-600' : '']"
+                                class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">{{
+                                item.name }}</ResponsiveNavLink>
                         </div>
-
-                        <div class="mt-3 space-y-1">
+                        <div class="py-6">
                             <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('logout')" method="post" as="button">
                                 Log Out
@@ -136,19 +79,15 @@ const showingNavigationDropdown = ref(false);
                         </div>
                     </div>
                 </div>
-            </nav>
+            </DialogPanel>
+        </Dialog>
+    </header>
+    <!-- Page Content -->
+    <main class="bg-gray-900">
+        <slot />
+    </main>
 
-            <!-- Page Heading -->
-            <header class="bg-white dark:bg-gray-800 shadow" v-if="$slots.header">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <slot name="header" />
-                </div>
-            </header>
+    <!-- Footer -->
+    <Footer />
 
-            <!-- Page Content -->
-            <main>
-                <slot />
-            </main>
-        </div>
-    </div>
 </template>
