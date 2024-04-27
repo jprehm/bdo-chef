@@ -21,6 +21,10 @@ const hasLowestCrafts = (item, ingredients) => {
 
     return convertToInt(item.recipe_crafts) == min_recipe_crafts
 }
+const triggerCrafting = ((item) => {
+    if (!item.ingredients) return;
+    item.showCrafting = !item.showCrafting
+})
 </script>
 
 <template>
@@ -45,8 +49,8 @@ const hasLowestCrafts = (item, ingredients) => {
                     </p>
                 </div>
             </div>
-            <div class="flex shrink-0 items-center gap-x-4">
-                <div class="hidden sm:flex sm:flex-col sm:items-end" @click="item.showCrafting = !item.showCrafting">
+            <div class="flex shrink-0 items-center gap-x-4" @click="triggerCrafting(item)">
+                <div class="hidden sm:flex sm:flex-col sm:items-end">
                     <span v-if="item.ingredients">
                         <p class="text-sm leading-6 text-gray-900">Ingredients</p>
                         <p v-if="!item.showCrafting" class="mt-1 text-xs leading-5 text-gray-500">
