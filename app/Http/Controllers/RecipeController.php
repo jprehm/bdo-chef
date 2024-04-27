@@ -24,8 +24,8 @@ class RecipeController extends Controller
             $recipe = (new CraftingCalculator($request->user()->load('ingredients'), $recipe))->run();
         }
 
-        return Inertia::render('Dashboard', [
-            'recipes' => Recipe::all(),
+        return Inertia::render('Recipes', [
+            'recipes' => Recipe::orderBy('name')->get(),
             'selected' => $request?->selected,
             'recipe' => $request?->selected ? $recipe : null,
         ]);
@@ -52,7 +52,7 @@ class RecipeController extends Controller
      */
     public function show(Recipe $recipe)
     {
-        return Inertia::render('Dashboard', [
+        return Inertia::render('Recipes', [
             'recipes' => Recipe::all(),
             'recipe' => $recipe,
         ]);
