@@ -3,6 +3,8 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, useForm } from '@inertiajs/vue3'
 import CardTable from '@/Components/Tables/CardTable.vue'
 import debounce from 'lodash.debounce'
+import TextInput from '@/Components/TextInput.vue'
+import InputLabel from '@/Components/InputLabel.vue'
 
 const props = defineProps({
     ingredients: {
@@ -29,6 +31,7 @@ const submit = debounce(() => {
 </script>
 
 <template>
+
     <Head title="Ingredients" />
 
     <AuthenticatedLayout>
@@ -39,14 +42,9 @@ const submit = debounce(() => {
         <div class="py-12">
             <div class="m-12">
                 <form @submit.prevent="submit">
-                    <label for="search" class="block text-sm font-medium leading-6 text-gray-900 dark:text-white">Quick
-                        search</label>
+                    <InputLabel for="search">Quick search</InputLabel>
                     <div class="relative mt-2 flex items-center">
-                        <input type="text" name="search" id="search"
-                            class="block w-full rounded-md border-0 py-1.5 pr-14 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            v-model="form.term" @input="submit" />
-                        <!-- <div class="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
-                        </div> -->
+                        <TextInput type="text" name="search" id="search" v-model="form.term" @input="submit" />
                     </div>
                 </form>
             </div>
