@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -46,6 +45,8 @@ class User extends Authenticatable
 
     public function ingredients(): MorphToMany
     {
-        return $this->morphToMany(Ingredient::class, 'ingredientable')->withPivot('count');
+        return $this->morphToMany(Ingredient::class, 'ingredientable')
+            ->withPivot('count')
+            ->orderBy('name');
     }
 }
