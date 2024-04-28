@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Ingredient;
 use App\Models\Recipe;
 use App\Models\User;
-use Exception;
+use App\Services\UserInventorySeeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 use stdClass;
@@ -18,57 +18,17 @@ class ConsumableSeeder extends Seeder
     public function run(): void
     {
         $this->getData()->each(function (stdClass $item) {
-            try {
-                $recipe = Recipe::where('name', $item->name)->sole();
-            } catch (Exception $e) {
-                dd($item->name);
-            }
+            $recipe = Recipe::where('name', $item->name)->sole();
 
             $item->ingredients->each(
-                function (stdClass $ingredient) use ($recipe) {
-                    try {
-                        $recipe->ingredients()->attach(
-                            Ingredient::where('name', $ingredient->name)->sole()->id,
-                            ['count' => $ingredient->count]
-                        );
-                    } catch (Exception $e) {
-                        dd($ingredient->name);
-                    }
-                }
+                fn (stdClass $ingredient) => $recipe->ingredients()->attach(
+                    Ingredient::where('name', $ingredient->name)->sole()->id,
+                    ['count' => $ingredient->count]
+                )
             );
-
-            // $item->ingredients->each(
-            //     fn (stdClass $ingredient) =>
-            //     $recipe->ingredients()->attach(
-            //         Ingredient::where('name', $ingredient->name)->sole()->id,
-            //         ['count' => $ingredient->count]
-            //     )
-            // );
         });
 
-        $this->getInventory()->each(function ($item) {
-
-            $item->ingredients->each(
-                function (stdClass $ingredient) use ($item) {
-                    try {
-                        $item->user->ingredients()->attach(
-                            Ingredient::where('name', $ingredient->name)->sole()->id,
-                            ['count' => $ingredient->count]
-                        );
-                    } catch (Exception $e) {
-                        dd($ingredient->name);
-                    }
-                }
-            );
-
-            // $item->ingredients->each(
-            //     fn (stdClass $ingredient) =>
-            //     $item->user->ingredients()->attach(
-            //         Ingredient::where('name', $ingredient->name)->sole()->id,
-            //         ['count' => $ingredient->count]
-            //     )
-            // );
-        });
+        (new UserInventorySeeder(User::first()))->run();
     }
 
     public function getData(): Collection
@@ -224,62 +184,6 @@ class ConsumableSeeder extends Seeder
                 ]),
             ],
 
-        ]);
-    }
-
-    public function getInventory(): Collection
-    {
-        return collect([
-            (object) [
-                'user' => User::first(),
-                'ingredients' => collect([
-                    (object) ['name' => 'Corn Dough', 'count' => 0],
-                    (object) ['name' => 'Corn Flour', 'count' => 32505 + 17338],
-                    (object) ['name' => 'Fig', 'count' => 153678], //worker
-                    (object) ['name' => 'Teff', 'count' => 210864 + 114761 + 40000], //worker
-                    (object) ['name' => 'Olive Oil', 'count' => 0],
-                    (object) ['name' => 'Corn', 'count' => 47145 + 72451], //worker
-                    (object) ['name' => 'Wheat', 'count' => 366627], //worker
-                    (object) ['name' => 'Strawberry', 'count' => 0],
-                    (object) ['name' => 'Vinegar', 'count' => 280972],
-                    (object) ['name' => 'Lion Meat', 'count' => 9834],
-                    (object) ['name' => 'Picked Vegetables', 'count' => 50871],
-                    (object) ['name' => 'Deer Meat', 'count' => 24290],
-                    (object) ['name' => 'Base Sauce', 'count' => 0],
-                    (object) ['name' => 'Milk', 'count' => 150],
-                    (object) ['name' => 'Cream', 'count' => 0],
-                    (object) ['name' => 'Salt', 'count' => 0],
-                    (object) ['name' => 'Scorpion Meat', 'count' => 0],
-                    (object) ['name' => 'Butter', 'count' => 16462 + 31738],
-                    (object) ['name' => 'Special Hot Pepper', 'count' => 58690 + 565],
-                    (object) ['name' => 'Freekeh', 'count' => 193709 + 112516 + 17481], //worker
-                    (object) ['name' => 'Star Anise', 'count' => 85935 + 267598], //worker
-                    (object) ['name' => 'Essence of Liquor', 'count' => 46911],
-                    (object) ['name' => 'Leaving Agent', 'count' => 208290],
-                    (object) ['name' => 'Sugar', 'count' => 274851],
-                    (object) ['name' => 'Date Palm', 'count' => 3401], //worker
-                    (object) ['name' => 'Paprika', 'count' => 0],
-                    (object) ['name' => 'Nutmeg', 'count' => 30760 + 36182], //worker
-                    (object) ['name' => 'Teff Flour Dough', 'count' => 18608],
-                    (object) ['name' => 'Freekeh Snake Stew', 'count' => 10097],
-                    // (object) ['name' => 'Thick Freekeh Snake Stew', 'count' => 12029],
-                    (object) ['name' => 'Mineral Water', 'count' => 0],
-                    (object) ['name' => 'Teff Flour', 'count' => 37680 + 22150],
-                    (object) ['name' => 'Red Sauce', 'count' => 2],
-                    (object) ['name' => 'Teff Bread', 'count' => 16994],
-                    // (object) ['name' => 'Spongy Teff Bread', 'count' => 16994],
-                    (object) ['name' => 'Grilled Scorpion', 'count' => 4171],
-                    (object) ['name' => 'Snake Meat', 'count' => 18140],
-
-                    (object) ['name' => 'Couscous', 'count' => 781 + 1768],
-                    (object) ['name' => 'Teff Sandwich', 'count' => 116213 + 12540],
-                    (object) ['name' => 'King of Jungle Hamburg', 'count' => 5304 + 32228],
-                    (object) ['name' => 'Fig Pie', 'count' => 8491 + 33506],
-                    (object) ['name' => 'Date Palm Wine', 'count' => 27607 + 147178],
-                    (object) ['name' => 'Valencia Meal', 'count' => 36015],
-                    (object) ['name' => 'Special Valencia Meal', 'count' => 5895],
-                ]),
-            ],
         ]);
     }
 }
