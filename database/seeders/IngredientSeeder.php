@@ -277,7 +277,7 @@ class IngredientSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ], [
-                'name' => 'Picked Vegetables',
+                'name' => 'Pickled Vegetables',
                 'weight' => 0.00,
                 'type' => 'cooking',
                 'created_at' => now(),

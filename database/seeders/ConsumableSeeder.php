@@ -77,7 +77,7 @@ class ConsumableSeeder extends Seeder
                     (object) ['name' => 'Sugar', 'count' => 1],
                 ]),
             ], (object) [
-                'name' => 'Picked Vegetables',
+                'name' => 'Pickled Vegetables',
                 'ingredients' => collect([
                     (object) ['name' => 'Paprika', 'count' => 8],
                     (object) ['name' => 'Vinegar', 'count' => 4],
@@ -97,7 +97,7 @@ class ConsumableSeeder extends Seeder
                 'ingredients' => collect([
                     (object) ['name' => 'Lion Meat', 'count' => 4],
                     (object) ['name' => 'Teff Bread', 'count' => 4],
-                    (object) ['name' => 'Picked Vegetables', 'count' => 2],
+                    (object) ['name' => 'Pickled Vegetables', 'count' => 2],
                     (object) ['name' => 'Nutmeg', 'count' => 3],
                 ]),
             ], (object) [
